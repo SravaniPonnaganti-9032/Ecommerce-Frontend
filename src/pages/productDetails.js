@@ -12,8 +12,11 @@ function ProductDetails({ onAddToCart }) {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [quantity, setQuantity] = useState(1);
+    const [adding, setAdding] = useState(false);
 
     useEffect(() => {
+        let active = true;
+
         const fetchProduct = async () => {
             try {
                 setLoading(true);
@@ -39,14 +42,20 @@ function ProductDetails({ onAddToCart }) {
                     throw new Error("Product details not found.");
                 }
 
-                setProduct(result.data);
+                if (active) {
+                    setProduct(result.data);
+                }
             } catch (err) {
-                setError(
-                    err.message ||
-                    "Unable to load product details."
-                );
+                if (active) {
+                    setError(
+                        err.message ||
+                        "Unable to load product details."
+                    );
+                }
             } finally {
-                setLoading(false);
+                if (active) {
+                    setLoading(false);
+                }
             }
         };
 
@@ -56,22 +65,35 @@ function ProductDetails({ onAddToCart }) {
             setError("Product ID is missing.");
             setLoading(false);
         }
+
+        return () => {
+            active = false;
+        };
     }, [id]);
 
-    const handleAddToCart = () => {
-        if (!product) return;
+    const handleAddToCart = async () => {
+        if (!product || adding) {
+            return;
+        }
 
         if (!product.isActive) {
             setMessage("This product is currently unavailable.");
             return;
         }
 
-        if (product.stock <= 0) {
+        const stock = Number(product.stock);
+        const selectedQuantity = Number(quantity);
+
+        if (stock <= 0) {
             setMessage("This product is out of stock.");
             return;
         }
 
-        if (quantity < 1 || quantity > product.stock) {
+        if (
+            !Number.isInteger(selectedQuantity) ||
+            selectedQuantity < 1 ||
+            selectedQuantity > stock
+        ) {
             setMessage("Please select a valid quantity.");
             return;
         }
@@ -81,13 +103,20 @@ function ProductDetails({ onAddToCart }) {
             return;
         }
 
-        // Add the selected quantity to the cart.
-        onAddToCart({
-            ...product,
-            quantity: quantity
-        });
+        try {
+            setAdding(true);
+            setMessage("");
 
-        setMessage("Product added to cart successfully!");
+            await onAddToCart(product, selectedQuantity);
+
+            setMessage("Product added to cart successfully!");
+        } catch (err) {
+            setMessage(
+                err.message || "Unable to add product to cart."
+            );
+        } finally {
+            setAdding(false);
+        }
     };
 
     if (loading) {
@@ -122,6 +151,9 @@ function ProductDetails({ onAddToCart }) {
             ? product.categoryId.name
             : "Not specified";
 
+    const stock = Number(product.stock || 0);
+    const price = Number(product.price || 0);
+
     return (
         <div className="product-details">
             <h1>Product Details</h1>
@@ -131,16 +163,16 @@ function ProductDetails({ onAddToCart }) {
 
                 <p>
                     <strong>Description:</strong>{" "}
-                    {product.description ||
-                        "No description available"}
+                    {product.description || "No description available"}
                 </p>
 
                 <p>
-                    <strong>Price:</strong> ₹{product.price}
+                    <strong>Price:</strong>{" "}
+                    ₹{price.toLocaleString("en-IN")}
                 </p>
 
                 <p>
-                    <strong>Stock:</strong> {product.stock}
+                    <strong>Stock:</strong> {stock}
                 </p>
 
                 <p>
@@ -175,7 +207,8 @@ function ProductDetails({ onAddToCart }) {
                         disabled={
                             quantity <= 1 ||
                             !product.isActive ||
-                            product.stock <= 0
+                            stock <= 0 ||
+                            adding
                         }
                         style={{
                             padding: "6px 14px",
@@ -200,17 +233,15 @@ function ProductDetails({ onAddToCart }) {
                         type="button"
                         onClick={() => {
                             setQuantity((previous) =>
-                                Math.min(
-                                    product.stock,
-                                    previous + 1
-                                )
+                                Math.min(stock, previous + 1)
                             );
                             setMessage("");
                         }}
                         disabled={
-                            quantity >= product.stock ||
+                            quantity >= stock ||
                             !product.isActive ||
-                            product.stock <= 0
+                            stock <= 0 ||
+                            adding
                         }
                         style={{
                             padding: "6px 14px",
@@ -224,11 +255,12 @@ function ProductDetails({ onAddToCart }) {
 
                 <p>
                     <strong>Subtotal:</strong>{" "}
-                    ₹{product.price * quantity}
+                    ₹{(price * quantity).toLocaleString("en-IN")}
                 </p>
 
                 {message && (
                     <p
+                        role="status"
                         style={{
                             color: message.includes("successfully")
                                 ? "green"
@@ -244,10 +276,11 @@ function ProductDetails({ onAddToCart }) {
                     onClick={handleAddToCart}
                     disabled={
                         !product.isActive ||
-                        product.stock <= 0
+                        stock <= 0 ||
+                        adding
                     }
                 >
-                    Add to Cart
+                    {adding ? "Adding to Cart..." : "Add to Cart"}
                 </button>
 
                 <p>

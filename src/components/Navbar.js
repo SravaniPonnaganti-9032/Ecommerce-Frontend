@@ -1,10 +1,15 @@
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+
 import "./Navbar.css";
 
-function Navbar({ cartCount = 0 }) {
+function Navbar() {
     const { user, isLoggedIn, logout } = useAuth();
+    const { cartCount } = useCart();
     const navigate = useNavigate();
 
     const userRole = String(user?.role || "")
