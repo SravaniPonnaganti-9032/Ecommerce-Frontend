@@ -42,13 +42,17 @@ function Navbar() {
                     </>
                 ) : (
                     <>
-                        <Link to="/">Home</Link>
+                      <Link to="/">Home</Link>
 
-                        <Link to="/products">Products</Link>
+                      <Link to="/products">Products</Link>
 
-                        <Link to="/cart">
-                            Cart ({cartCount})
-                        </Link>
+                      <Link to="/cart">
+                          Cart ({cartCount})
+                       </Link>
+
+                          {isLoggedIn && (
+                      <Link to="/orders">My Orders</Link>
+                           )}
                     </>
                 )}
 

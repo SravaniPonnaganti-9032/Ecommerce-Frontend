@@ -23,6 +23,10 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 
+// Assignment 9 pages
+import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
+
 import AdminProduct from "./pages/AdminProducts";
 import AdminCategory from "./pages/AdminCategory";
 
@@ -76,12 +80,27 @@ function AppContent() {
                     <Route path="/cart" element={<Cart />} />
 
                     {/* Assignment 8: Checkout */}
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route
+                        path="/checkout"
+                        element={<Checkout />}
+                    />
 
                     {/* Assignment 8: Order confirmation */}
                     <Route
                         path="/order-confirmation/:orderId"
                         element={<OrderConfirmation />}
+                    />
+
+                    {/* Assignment 9: Customer order history */}
+                    <Route
+                        path="/orders"
+                        element={<Orders />}
+                    />
+
+                    {/* Assignment 9: Individual order details */}
+                    <Route
+                        path="/orders/:id"
+                        element={<OrderDetails />}
                     />
                 </Route>
 
