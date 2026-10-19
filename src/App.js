@@ -9,7 +9,7 @@ import {
     Link
 } from "react-router-dom";
 
-import { AuthProvider,  } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import { CartProvider, useCart } from "./context/CartContext";
 
 import Navbar from "./components/Navbar";
@@ -20,6 +20,8 @@ import ProductDetails from "./pages/productDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 import AdminProduct from "./pages/AdminProducts";
 import AdminCategory from "./pages/AdminCategory";
@@ -37,70 +39,56 @@ function Unauthorized() {
 
 // Main app content can access authentication and cart contexts
 function AppContent() {
-    
     const { addToCart } = useCart();
 
-    // Keep role-based routing and all existing management pages.
     return (
         <>
             <Navbar />
 
             <Routes>
                 {/* Public routes */}
-                <Route
-                    path="/"
-                    element={<Products />}
-                />
+                <Route path="/" element={<Products />} />
 
-                <Route
-                    path="/products"
-                    element={<Products />}
-                />
+                <Route path="/products" element={<Products />} />
 
                 <Route
                     path="/products/:id"
                     element={
-                        <ProductDetails
-                            onAddToCart={addToCart}
-                        />
+                        <ProductDetails onAddToCart={addToCart} />
                     }
                 />
 
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
+                <Route path="/login" element={<Login />} />
 
-                <Route
-                    path="/register"
-                    element={<Register />}
-                />
+                <Route path="/register" element={<Register />} />
 
                 <Route
                     path="/unauthorized"
                     element={<Unauthorized />}
                 />
 
-                {/* Cart requires login and is customer-only */}
+                {/* Customer-only routes */}
                 <Route
                     element={
-                        <ProtectedRoute
-                            allowedRoles={["customer"]}
-                        />
+                        <ProtectedRoute allowedRoles={["customer"]} />
                     }
                 >
+                    <Route path="/cart" element={<Cart />} />
+
+                    {/* Assignment 8: Checkout */}
+                    <Route path="/checkout" element={<Checkout />} />
+
+                    {/* Assignment 8: Order confirmation */}
                     <Route
-                        path="/cart"
-                        element={<Cart />}
+                        path="/order-confirmation/:orderId"
+                        element={<OrderConfirmation />}
                     />
                 </Route>
 
                 {/* Admin-only routes */}
                 <Route
                     element={
-                        <ProtectedRoute
-                            allowedRoles={["admin"]}
-                        />
+                        <ProtectedRoute allowedRoles={["admin"]} />
                     }
                 >
                     <Route

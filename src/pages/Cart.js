@@ -174,6 +174,31 @@ function Cart() {
                             Continue Shopping
                         </Link>
 
+                        <Link
+                            to="/checkout"
+                            aria-disabled={actionLoading}
+                            onClick={(event) => {
+                                if (actionLoading) {
+                                    event.preventDefault();
+                                }
+                            }}
+                            style={{
+                                display: "inline-block",
+                                padding: "10px 16px",
+                                backgroundColor: actionLoading
+                                    ? "#999"
+                                    : "#198754",
+                                color: "#fff",
+                                textDecoration: "none",
+                                borderRadius: "4px",
+                                pointerEvents: actionLoading
+                                    ? "none"
+                                    : "auto"
+                            }}
+                        >
+                            Proceed to Checkout
+                        </Link>
+
                         <button
                             type="button"
                             disabled={actionLoading}

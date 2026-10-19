@@ -1,6 +1,8 @@
 
+import "./ProductDetails.css";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
 
 const API_URL = "http://localhost:5000";
 
@@ -272,22 +274,21 @@ function ProductDetails({ onAddToCart }) {
                 )}
 
                 <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    disabled={
-                        !product.isActive ||
-                        stock <= 0 ||
-                        adding
-                    }
-                >
-                    {adding ? "Adding to Cart..." : "Add to Cart"}
-                </button>
+    type="button"
+    className="add-to-cart-btn"
+    onClick={handleAddToCart}
+    disabled={
+        !product.isActive ||
+        stock <= 0 ||
+        adding
+    }
+>
+    {adding ? "Adding to Cart..." : "🛒 Add to Cart"}
+</button>
 
-                <p>
-                    <Link to="/products">
-                        Back to Products
-                    </Link>
-                </p>
+                <Link to="/products" className="back-to-products">
+                      ← Back to Products
+                </Link>
             </div>
         </div>
     );
