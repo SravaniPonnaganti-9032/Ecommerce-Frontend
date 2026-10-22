@@ -1055,3 +1055,157 @@ body {
         padding: 12px 10px;
     }
 }
+
+
+/* Assignment 11: Product search and filters */
+
+.product-filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.filter-field label {
+    font-weight: 600;
+    color: #333333;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: 2px solid #8bb9ff;
+    outline-offset: 1px;
+}
+
+.clear-filters-button,
+.no-products-message button {
+    align-self: end;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #333333;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.clear-filters-button:hover,
+.no-products-message button:hover {
+    background: #555555;
+}
+
+.product-results-count {
+    margin: 16px 0;
+    color: #555555;
+}
+
+.filter-warning {
+    color: #a15c00;
+    font-size: 12px;
+}
+
+.no-products-message {
+    padding: 32px 16px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.no-products-message h2 {
+    margin-top: 0;
+}
+
+/* Assignment 11: Pagination */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 28px 0;
+}
+
+.pagination button {
+    min-width: 40px;
+    padding: 9px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #333333;
+    cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #eeeeee;
+}
+
+.pagination button.active {
+    background: #333333;
+    color: #ffffff;
+    border-color: #333333;
+}
+
+.pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Responsive layout */
+
+@media (max-width: 768px) {
+    .product-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .search-field {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .search-field {
+        grid-column: auto;
+    }
+
+    .clear-filters-button {
+        width: 100%;
+    }
+
+    .pagination {
+        gap: 5px;
+    }
+
+    .pagination button {
+        padding: 8px 10px;
+    }
+}
