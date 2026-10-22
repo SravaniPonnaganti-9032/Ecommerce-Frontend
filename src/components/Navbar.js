@@ -32,6 +32,14 @@ function Navbar() {
             <div className="navbar-links">
                 {isAdmin ? (
                     <>
+                        <Link to="/admin">
+                            Dashboard
+                        </Link>
+
+                        <Link to="/admin/orders">
+                            Manage Orders
+                        </Link>
+
                         <Link to="/admin/products">
                             Manage Products
                         </Link>
@@ -42,24 +50,35 @@ function Navbar() {
                     </>
                 ) : (
                     <>
-                      <Link to="/">Home</Link>
+                        <Link to="/">
+                            Home
+                        </Link>
 
-                      <Link to="/products">Products</Link>
+                        <Link to="/products">
+                            Products
+                        </Link>
 
-                      <Link to="/cart">
-                          Cart ({cartCount})
-                       </Link>
+                        <Link to="/cart">
+                            Cart ({cartCount})
+                        </Link>
 
-                          {isLoggedIn && (
-                      <Link to="/orders">My Orders</Link>
-                           )}
+                        {isLoggedIn && (
+                            <Link to="/orders">
+                                My Orders
+                            </Link>
+                        )}
                     </>
                 )}
 
                 {!isLoggedIn ? (
                     <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
+                        <Link to="/login">
+                            Login
+                        </Link>
+
+                        <Link to="/register">
+                            Register
+                        </Link>
                     </>
                 ) : (
                     <>

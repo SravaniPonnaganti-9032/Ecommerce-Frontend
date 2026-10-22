@@ -29,7 +29,9 @@ import OrderDetails from "./pages/OrderDetails";
 
 import AdminProduct from "./pages/AdminProducts";
 import AdminCategory from "./pages/AdminCategory";
-
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminOrders from "./pages/AdminOrders";
+import AdminOrderDetails from "./pages/AdminOrderDetails";
 // Unauthorized page
 function Unauthorized() {
     return (
@@ -120,6 +122,11 @@ function AppContent() {
                         element={<AdminCategory />}
                     />
 
+                    <Route
+                        path="/admin"
+                        element={<AdminDashboard />}
+                    />
+
                     {/* Preserve existing route aliases */}
                     <Route
                         path="/manage-products"
@@ -132,6 +139,14 @@ function AppContent() {
                     />
                 </Route>
 
+                <Route
+                        path="/admin/orders"
+                        element={<AdminOrders />}
+                    />
+                <Route
+                        path="/admin/orders/:id"
+                        element={<AdminOrderDetails />}
+                    />
                 {/* Unknown route */}
                 <Route
                     path="*"
